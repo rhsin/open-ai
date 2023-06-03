@@ -25,7 +25,7 @@ public class PromptController {
     }
 
     @PostMapping("/prompt")
-    public ResponseEntity<PromptResponse> sendPrompt(@RequestBody String prompt) throws IOException, InterruptedException {
-        return new ResponseEntity(promptService.sendPrompt(prompt), HttpStatus.OK);
+    public ResponseEntity<PromptResponse> sendPrompt(@RequestBody String message) throws IOException, InterruptedException {
+        return new ResponseEntity(promptService.sendPrompt(message), HttpStatus.OK);
     }
 }
