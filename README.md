@@ -1,1 +1,1 @@
-"# com.openai.prompt.prompt" 
+"# prompt" 
