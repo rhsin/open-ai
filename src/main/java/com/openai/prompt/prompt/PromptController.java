@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,8 +25,13 @@ public class PromptController {
         return new ResponseEntity(promptService.getMetadata(), HttpStatus.OK);
     }
 
+    @GetMapping("/prompt")
+    public ResponseEntity<List<PromptRecord>> getPrompts() {
+        return new ResponseEntity(promptService.getPrompts(), HttpStatus.OK);
+    }
+
     @PostMapping("/prompt")
-    public ResponseEntity<PromptResponse> sendPrompt(@RequestBody String message) throws IOException, InterruptedException {
+    public ResponseEntity<PromptRecord> sendPrompt(@RequestBody String message) throws IOException, InterruptedException {
         return new ResponseEntity(promptService.sendPrompt(message), HttpStatus.OK);
     }
 }

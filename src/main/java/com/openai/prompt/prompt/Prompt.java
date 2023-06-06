@@ -1,25 +1,11 @@
 package com.openai.prompt.prompt;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.util.List;
 
-@Entity
-@Table(name = "prompts")
 public class Prompt {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private String model;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition="JSON")
     private List<Message> messages;
-
     private int max_tokens;
     private double temperature;
 
@@ -30,14 +16,6 @@ public class Prompt {
         this.messages = messages;
         this.max_tokens = max_tokens;
         this.temperature = temperature;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getModel() {
@@ -75,7 +53,6 @@ public class Prompt {
     @Override
     public String toString() {
         return "Prompt{" +
-            "id=" + id +
             ", model='" + model + '\'' +
             ", messages=" + messages +
             ", max_tokens=" + max_tokens +

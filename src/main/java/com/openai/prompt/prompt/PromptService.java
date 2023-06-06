@@ -24,11 +24,16 @@ public class PromptService {
     private String model;
     @Value("${OPENAI_KEY}")
     private String apiKey;
+
+    private final PromptRecordRepository repository;
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper mapper;
+    private final PromptMapper promptMapper;
 
-    public PromptService(ObjectMapper mapper) {
+    public PromptService(PromptRecordRepository repository, ObjectMapper mapper, PromptMapper promptMapper) {
+        this.repository = repository;
         this.mapper = mapper;
+        this.promptMapper = promptMapper;
     }
 
     public Map<String, String> getMetadata() {
@@ -40,7 +45,11 @@ public class PromptService {
         return metadata;
     }
 
-    public PromptResponse sendPrompt(String message) throws IOException, InterruptedException {
+    public List<PromptRecord> getPrompts() {
+        return repository.findAll();
+    }
+
+    public PromptRecord sendPrompt(String message) throws IOException, InterruptedException {
         List<Message> messages = new ArrayList<>();
         Message newMessage = new Message("user", message);
         messages.add(newMessage);
@@ -65,6 +74,9 @@ public class PromptService {
         promptResponse.setPromptId(id);
         System.out.println(promptResponse.toString());
 
-        return promptResponse;
+        PromptRecord promptRecord = promptMapper.mapPromptRecord(newPrompt, promptResponse);
+        System.out.println(promptRecord.toString());
+
+        return repository.save(promptRecord);
     }
 }

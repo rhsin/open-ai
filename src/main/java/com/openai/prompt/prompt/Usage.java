@@ -6,6 +6,8 @@ public class Usage {
     private Integer completion_tokens;
     private Integer total_tokens;
 
+    public Usage() {}
+
     public Usage(Integer prompt_tokens, Integer completion_tokens, Integer total_tokens) {
         this.prompt_tokens = prompt_tokens;
         this.completion_tokens = completion_tokens;

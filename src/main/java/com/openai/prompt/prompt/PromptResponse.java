@@ -1,31 +1,15 @@
 package com.openai.prompt.prompt;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Table(name = "prompt_responses")
 public class PromptResponse {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     private String promptId;
     private String object;
     private LocalDate created;
     private String model;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition="JSON")
     private List<Choice> choices;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition="JSON")
     private Usage usage;
 
     public PromptResponse() {}
@@ -45,14 +29,6 @@ public class PromptResponse {
         this.model = model;
         this.choices = choices;
         this.usage = usage;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPromptId() {
@@ -106,7 +82,6 @@ public class PromptResponse {
     @Override
     public String toString() {
         return "PromptResponse{" +
-            "id=" + id +
             ", promptId='" + promptId + '\'' +
             ", object='" + object + '\'' +
             ", created=" + created +

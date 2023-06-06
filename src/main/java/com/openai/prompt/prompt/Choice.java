@@ -6,6 +6,8 @@ public class Choice {
     private Integer index;
     private String finish_reason;
 
+    public Choice() {}
+
     public Choice(Message message, Integer index, String finish_reason) {
         this.message = message;
         this.index = index;
