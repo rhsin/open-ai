@@ -1,11 +1,9 @@
 package com.openai.prompt.prompt;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +21,11 @@ public class PromptController {
     @GetMapping("/metadata")
     public ResponseEntity<Map<String, String>> getMetadata() {
         return new ResponseEntity(promptService.getMetadata(), HttpStatus.OK);
+    }
+
+    @GetMapping("/usage")
+    public ResponseEntity<Map<String, String>> getUsage(@RequestParam int month) throws IOException, InterruptedException {
+        return new ResponseEntity(promptService.getUsage(month), HttpStatus.OK);
     }
 
     @GetMapping("/prompt")

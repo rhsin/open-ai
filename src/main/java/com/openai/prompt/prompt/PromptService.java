@@ -45,6 +45,29 @@ public class PromptService {
         return metadata;
     }
 
+    public Map<String, String> getUsage(int month) throws IOException, InterruptedException {
+        String end_date = "2023-" + String.format("%02d", month) + "-30";
+        Map<String, String> usageData = new HashMap();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(apiUrl + "/dashboard/billing/usage?start_date=2023-06-01&end_date=" + end_date))
+            .header("Authorization", "Bearer " + apiKey)
+            .header("Content-Type", "application/json")
+            .GET()
+            .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Response: " + response);
+
+        JsonNode responseJson = mapper.readTree(response.body());
+        usageData.put("month", String.format("%02d", month));
+        usageData.put("total_requests", String.valueOf(responseJson.get("daily_costs").size()));
+        usageData.put("total_usage", responseJson.get("total_usage").asText());
+        System.out.println("Usage data: " + usageData.toString());
+
+        return usageData;
+    }
+
     public List<PromptRecord> getPrompts() {
         return repository.findAll();
     }
@@ -54,11 +77,11 @@ public class PromptService {
         Message newMessage = new Message("user", message);
         messages.add(newMessage);
 
-        Prompt newPrompt = new Prompt(model, messages, 5, 1);
+        Prompt newPrompt = new Prompt(model, messages, 15, 1);
         System.out.println(newPrompt.toString());
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(apiUrl))
+            .uri(URI.create(apiUrl + "/chat/completions"))
             .header("Authorization", "Bearer " + apiKey)
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(newPrompt)))
