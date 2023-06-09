@@ -43,6 +43,7 @@ public class PromptControllerIT {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().containsKey("total_requests")).isTrue();
         assertThat(response.getBody().containsKey("total_usage")).isTrue();
+        assertThat(response.getBody().containsKey("total_cost")).isTrue();
     }
 }
 

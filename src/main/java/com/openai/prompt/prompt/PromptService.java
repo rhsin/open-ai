@@ -60,9 +60,14 @@ public class PromptService {
         System.out.println("Response: " + response);
 
         JsonNode responseJson = mapper.readTree(response.body());
+
+        String totalRequests = String.valueOf(responseJson.get("daily_costs").size());
+        String totalCost = String.valueOf(responseJson.get("total_usage").asInt() * 0.000002);
+
         usageData.put("month", String.format("%02d", month));
-        usageData.put("total_requests", String.valueOf(responseJson.get("daily_costs").size()));
+        usageData.put("total_requests", totalRequests);
         usageData.put("total_usage", responseJson.get("total_usage").asText());
+        usageData.put("total_cost", totalCost);
         System.out.println("Usage data: " + usageData.toString());
 
         return usageData;

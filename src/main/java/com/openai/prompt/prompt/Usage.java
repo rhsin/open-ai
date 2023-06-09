@@ -5,13 +5,15 @@ public class Usage {
     private Integer prompt_tokens;
     private Integer completion_tokens;
     private Integer total_tokens;
+    private float total_cost;
 
     public Usage() {}
 
-    public Usage(Integer prompt_tokens, Integer completion_tokens, Integer total_tokens) {
+    public Usage(Integer prompt_tokens, Integer completion_tokens, Integer total_tokens, float total_cost) {
         this.prompt_tokens = prompt_tokens;
         this.completion_tokens = completion_tokens;
         this.total_tokens = total_tokens;
+        this.total_cost = total_cost;
     }
 
     public Integer getPrompt_tokens() {
@@ -38,12 +40,21 @@ public class Usage {
         this.total_tokens = total_tokens;
     }
 
+    public float getTotal_cost() {
+        return total_cost;
+    }
+
+    public void setTotal_cost(float total_cost) {
+        this.total_cost = total_cost;
+    }
+
     @Override
     public String toString() {
         return "Usage{" +
             "prompt_tokens=" + prompt_tokens +
             ", completion_tokens=" + completion_tokens +
             ", total_tokens=" + total_tokens +
+            ", total_cost=" + total_cost +
             '}';
     }
 }

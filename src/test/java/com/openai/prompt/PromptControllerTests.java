@@ -37,6 +37,7 @@ class PromptControllerTests {
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.total_requests", notNullValue()))
-			.andExpect(jsonPath("$.total_usage", notNullValue()));
+			.andExpect(jsonPath("$.total_usage", notNullValue()))
+			.andExpect(jsonPath("$.total_cost", notNullValue()));
 	}
 }
