@@ -22,8 +22,20 @@ class PromptControllerTests {
 	private MockMvc mvc;
 
 	@Test
-	public void getPrompts() throws Exception {
+	public void getPromptDTOs() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/prompt")
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
+			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
+			.andExpect(jsonPath("$.[0].prompts", hasSize(greaterThanOrEqualTo(1))))
+			.andExpect(jsonPath("$.[1].responses", hasSize(greaterThanOrEqualTo(1))))
+			.andExpect(jsonPath("$.[1].total_tokens", greaterThanOrEqualTo(10)));
+	}
+
+	@Test
+	public void getPromptRecords() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/records")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))

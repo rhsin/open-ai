@@ -2,6 +2,12 @@ package com.openai.prompt.prompt;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openai.prompt.prompt.models.Message;
+import com.openai.prompt.prompt.models.Prompt;
+import com.openai.prompt.prompt.models.PromptDTO;
+import com.openai.prompt.prompt.models.PromptRecord;
+import com.openai.prompt.prompt.models.PromptResponse;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +43,7 @@ public class PromptService {
     }
 
     public Map<String, String> getMetadata() {
-        Map<String, String> metadata = new HashMap();
+        Map<String, String> metadata = new HashMap<>();
 
         metadata.put("apiUrl", apiUrl);
         metadata.put("model", model);
@@ -47,7 +53,7 @@ public class PromptService {
 
     public Map<String, String> getUsage(int month) throws IOException, InterruptedException {
         String end_date = "2023-" + String.format("%02d", month) + "-30";
-        Map<String, String> usageData = new HashMap();
+        Map<String, String> usageData = new HashMap<>();
 
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(apiUrl + "/dashboard/billing/usage?start_date=2023-06-01&end_date=" + end_date))
@@ -73,8 +79,19 @@ public class PromptService {
         return usageData;
     }
 
-    public List<PromptRecord> getPrompts() {
+    public List<PromptRecord> getPromptRecords() {
         return repository.findAll();
+    }
+
+    public List<PromptDTO> getPromptDTOs() {
+        List<PromptRecord> prompts = repository.findAll();
+        List<PromptDTO> promptsDTO = new ArrayList<>();
+
+        for (PromptRecord prompt : prompts) {
+            promptsDTO.add(promptMapper.mapPromptDTO(prompt));
+        }
+
+        return promptsDTO;
     }
 
     public PromptRecord sendPrompt(String message) throws IOException, InterruptedException {

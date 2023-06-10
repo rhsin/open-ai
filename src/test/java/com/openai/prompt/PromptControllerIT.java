@@ -1,6 +1,5 @@
 package com.openai.prompt;
 
-import com.openai.prompt.prompt.PromptRecord;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.openai.prompt.prompt.models.PromptDTO;
+import com.openai.prompt.prompt.models.PromptRecord;
 
 import java.util.List;
 import java.util.Map;
@@ -22,10 +24,24 @@ public class PromptControllerIT {
     private TestRestTemplate template;
 
     @Test
-    public void getPrompts() {
+    public void getPromptDTOs() {
+        ParameterizedTypeReference<List<PromptDTO>> prompts = new ParameterizedTypeReference<List<PromptDTO>>() {};
+
+        ResponseEntity<List<PromptDTO>> response = template.exchange("/prompt", HttpMethod.GET, null, prompts);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().size()).isGreaterThanOrEqualTo(2);
+        assertThat(response.getBody().get(0).getModel()).isEqualTo("gpt-3.5-turbo-0301");
+        assertThat(response.getBody().get(0).getPrompts().size()).isGreaterThanOrEqualTo(1);
+        assertThat(response.getBody().get(1).getResponses().size()).isGreaterThanOrEqualTo(1);
+        assertThat(response.getBody().get(1).getTotal_tokens()).isGreaterThanOrEqualTo(2);
+    }
+
+    @Test
+    public void getPromptRecords() {
         ParameterizedTypeReference<List<PromptRecord>> prompts = new ParameterizedTypeReference<List<PromptRecord>>() {};
 
-        ResponseEntity<List<PromptRecord>> response = template.exchange("/prompt", HttpMethod.GET, null, prompts);
+        ResponseEntity<List<PromptRecord>> response = template.exchange("/prompt/records", HttpMethod.GET, null, prompts);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().size()).isGreaterThanOrEqualTo(2);

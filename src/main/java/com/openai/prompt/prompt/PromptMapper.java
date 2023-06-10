@@ -1,6 +1,13 @@
 package com.openai.prompt.prompt;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.openai.prompt.prompt.models.Prompt;
+import com.openai.prompt.prompt.models.PromptDTO;
+import com.openai.prompt.prompt.models.PromptRecord;
+import com.openai.prompt.prompt.models.PromptResponse;
 
 @Service
 public class PromptMapper {
@@ -19,5 +26,21 @@ public class PromptMapper {
         );
 
         return promptRecord;
+    }
+
+    public PromptDTO mapPromptDTO(PromptRecord promptRecord) {
+        List<String> prompts = promptRecord.getMessages().stream().map(message -> message.getContent()).toList();
+        List<String> responses = promptRecord.getChoices().stream().map(choice -> choice.getMessage().getContent()).toList();
+
+        PromptDTO promptDTO = new PromptDTO(
+            promptRecord.getPrompt_id(),
+            promptRecord.getCreated(),
+            promptRecord.getModel(),
+            prompts,
+            responses,
+            promptRecord.getUsage().getTotal_tokens()
+        );
+
+        return promptDTO;
     }
 }

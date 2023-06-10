@@ -1,4 +1,4 @@
-package com.openai.prompt.prompt;
+package com.openai.prompt.prompt.models;
 
 import java.util.List;
 

@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.openai.prompt.prompt.models.PromptDTO;
+import com.openai.prompt.prompt.models.PromptRecord;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -19,21 +22,26 @@ public class PromptController {
 
     @GetMapping("/metadata")
     public ResponseEntity<Map<String, String>> getMetadata() {
-        return new ResponseEntity(promptService.getMetadata(), HttpStatus.OK);
+        return new ResponseEntity<>(promptService.getMetadata(), HttpStatus.OK);
     }
 
     @GetMapping("/usage")
     public ResponseEntity<Map<String, String>> getUsage(@RequestParam int month) throws IOException, InterruptedException {
-        return new ResponseEntity(promptService.getUsage(month), HttpStatus.OK);
+        return new ResponseEntity<>(promptService.getUsage(month), HttpStatus.OK);
     }
 
     @GetMapping("/prompt")
-    public ResponseEntity<List<PromptRecord>> getPrompts() {
-        return new ResponseEntity(promptService.getPrompts(), HttpStatus.OK);
+    public ResponseEntity<List<PromptDTO>> getPromptDTOs() throws IOException, InterruptedException {
+        return new ResponseEntity<>(promptService.getPromptDTOs(), HttpStatus.OK);
+    }
+
+    @GetMapping("/prompt/records")
+    public ResponseEntity<List<PromptRecord>> getPromptRecords() {
+        return new ResponseEntity<>(promptService.getPromptRecords(), HttpStatus.OK);
     }
 
     @PostMapping("/prompt")
     public ResponseEntity<PromptRecord> sendPrompt(@RequestBody String message) throws IOException, InterruptedException {
-        return new ResponseEntity(promptService.sendPrompt(message), HttpStatus.OK);
+        return new ResponseEntity<>(promptService.sendPrompt(message), HttpStatus.OK);
     }
 }
