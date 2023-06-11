@@ -1,5 +1,6 @@
 package com.openai.prompt.prompt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -42,5 +43,15 @@ public class PromptMapper {
         );
 
         return promptDTO;
+    }
+
+    public List<PromptDTO> mapPromptDTOs(List<PromptRecord> promptRecords) {
+        List<PromptDTO> promptDTOs = new ArrayList<>();
+
+        for (PromptRecord promptRecord : promptRecords) {
+            promptDTOs.add(this.mapPromptDTO(promptRecord));
+        }
+
+        return promptDTOs;
     }
 }

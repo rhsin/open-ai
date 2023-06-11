@@ -85,13 +85,9 @@ public class PromptService {
 
     public List<PromptDTO> getPromptDTOs() {
         List<PromptRecord> prompts = repository.findAll();
-        List<PromptDTO> promptsDTO = new ArrayList<>();
+        List<PromptDTO> promptDTOs = promptMapper.mapPromptDTOs(prompts);
 
-        for (PromptRecord prompt : prompts) {
-            promptsDTO.add(promptMapper.mapPromptDTO(prompt));
-        }
-
-        return promptsDTO;
+        return promptDTOs;
     }
 
     public PromptRecord sendPrompt(String message) throws IOException, InterruptedException {
