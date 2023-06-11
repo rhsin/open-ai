@@ -44,6 +44,27 @@ class PromptControllerTests {
 	}
 
 	@Test
+	public void getPromptRecord() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/2")
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.model", is("gpt-3.5-turbo-0301")))
+			.andExpect(jsonPath("$.max_tokens", is(5)));
+	}
+
+	@Test
+	public void findPromptDTOs() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/find/response?keyword=hello")
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
+			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
+			.andExpect(jsonPath("$.[0].prompts", hasSize(greaterThanOrEqualTo(1))))
+			.andExpect(jsonPath("$.[0].responses", hasSize(greaterThanOrEqualTo(1))))
+			.andExpect(jsonPath("$.[0].total_tokens", greaterThanOrEqualTo(10)));
+	}
+
+	@Test
 	public void getUsage() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/usage?month=6")
 			.accept(MediaType.APPLICATION_JSON))

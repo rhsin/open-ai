@@ -30,8 +30,12 @@ public class PromptMapper {
     }
 
     public PromptDTO mapPromptDTO(PromptRecord promptRecord) {
-        List<String> prompts = promptRecord.getMessages().stream().map(message -> message.getContent()).toList();
-        List<String> responses = promptRecord.getChoices().stream().map(choice -> choice.getMessage().getContent()).toList();
+        List<String> prompts = promptRecord.getMessages().stream()
+            .map(message -> message.getContent())
+            .toList();
+        List<String> responses = promptRecord.getChoices().stream()
+            .map(choice -> choice.getMessage().getContent())
+            .toList();
 
         PromptDTO promptDTO = new PromptDTO(
             promptRecord.getPrompt_id(),

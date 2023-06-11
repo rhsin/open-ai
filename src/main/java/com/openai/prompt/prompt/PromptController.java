@@ -3,6 +3,7 @@ package com.openai.prompt.prompt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.openai.prompt.prompt.models.CustomPrompt;
 import com.openai.prompt.prompt.models.PromptDTO;
@@ -41,14 +42,24 @@ public class PromptController {
         return new ResponseEntity<>(promptService.getPromptRecords(), HttpStatus.OK);
     }
 
+    @GetMapping("/prompt/records/{id}")
+    public ResponseEntity<PromptRecord> getPromptRecord(@PathVariable Long id) throws ResponseStatusException {
+        return new ResponseEntity<>(promptService.getPromptRecord(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/prompt/find/{field}")
+    public ResponseEntity<List<PromptDTO>> findPromptDTOs(@PathVariable String field, @RequestParam String keyword) {
+        return new ResponseEntity<>(promptService.findPromptDTOs(field, keyword), HttpStatus.OK);
+    }
+
     @PostMapping("/prompt")
     public ResponseEntity<PromptRecord> sendDefaultPrompt(@RequestBody String message) throws IOException, InterruptedException {
-        return new ResponseEntity<>(promptService.sendDefaultPrompt(message), HttpStatus.OK);
+        return new ResponseEntity<>(promptService.sendDefaultPrompt(message), HttpStatus.CREATED);
     }
 
     @PostMapping("/prompt/custom")
     public ResponseEntity<PromptRecord> sendCustomPrompt(@RequestBody CustomPrompt customPrompt) 
         throws IOException, InterruptedException {
-        return new ResponseEntity<>(promptService.sendCustomPrompt(customPrompt), HttpStatus.OK);
+        return new ResponseEntity<>(promptService.sendCustomPrompt(customPrompt), HttpStatus.CREATED);
     }
 }

@@ -10,7 +10,9 @@ import com.openai.prompt.prompt.models.PromptRecord;
 import com.openai.prompt.prompt.models.PromptResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -89,6 +91,42 @@ public class PromptService {
         List<PromptDTO> promptDTOs = promptMapper.mapPromptDTOs(prompts);
 
         return promptDTOs;
+    }
+
+    public PromptRecord getPromptRecord(Long id) throws ResponseStatusException {
+        return repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Prompt record not found: " + id));
+    }
+
+    public List<PromptDTO> findPromptDTOs(String field, String keyword) {
+        List<PromptRecord> prompts = repository.findAll();
+        List<PromptDTO> promptDTOs = promptMapper.mapPromptDTOs(prompts);
+
+        switch (field) {
+            case "prompt":
+                System.out.println("Searching prompts for: " + keyword);
+                return promptDTOs.stream()
+                    .filter(prompt -> prompt.getPrompts().stream()
+                    .anyMatch(p -> p.toLowerCase().contains(keyword.toLowerCase())))
+                    .toList();
+            case "response":
+                System.out.println("Searching responses for: " + keyword);
+                return promptDTOs.stream()
+                    .filter(prompt -> prompt.getResponses().stream()
+                    .anyMatch(p -> p.toLowerCase().contains(keyword.toLowerCase())))
+                    .toList();
+            case "prompt_id":
+                System.out.println("Searching prompt ids for: " + keyword);
+                return promptDTOs.stream()
+                    .filter(prompt -> prompt.getPrompt_id().contains(keyword))
+                    .toList();
+            default:
+                System.out.println("Searching prompts for: " + keyword);
+                return promptDTOs.stream()
+                    .filter(prompt -> prompt.getPrompts().stream()
+                    .anyMatch(p -> p.toLowerCase().contains(keyword.toLowerCase())))
+                    .toList();
+        }
     }
 
     public PromptRecord sendDefaultPrompt(String message) throws IOException, InterruptedException {
