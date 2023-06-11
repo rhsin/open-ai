@@ -49,7 +49,7 @@ public class PromptMapper {
         List<PromptDTO> promptDTOs = new ArrayList<>();
 
         for (PromptRecord promptRecord : promptRecords) {
-            promptDTOs.add(this.mapPromptDTO(promptRecord));
+            promptDTOs.add(mapPromptDTO(promptRecord));
         }
 
         return promptDTOs;

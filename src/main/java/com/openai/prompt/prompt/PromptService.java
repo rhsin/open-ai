@@ -2,6 +2,7 @@ package com.openai.prompt.prompt;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openai.prompt.prompt.models.CustomPrompt;
 import com.openai.prompt.prompt.models.Message;
 import com.openai.prompt.prompt.models.Prompt;
 import com.openai.prompt.prompt.models.PromptDTO;
@@ -90,12 +91,30 @@ public class PromptService {
         return promptDTOs;
     }
 
-    public PromptRecord sendPrompt(String message) throws IOException, InterruptedException {
+    public PromptRecord sendDefaultPrompt(String message) throws IOException, InterruptedException {
         List<Message> messages = new ArrayList<>();
         Message newMessage = new Message("user", message);
         messages.add(newMessage);
 
-        Prompt newPrompt = new Prompt(model, messages, 15, 1);
+        return sendPrompt(model, messages, 15, 1);
+    }
+
+    public PromptRecord sendCustomPrompt(CustomPrompt customPrompt) throws IOException, InterruptedException {
+        List<Message> messages = new ArrayList<>();
+        String customMessage = "Can you provide some guidance on implementing" + customPrompt.getCategory() +
+            "standards in " + customPrompt.getIndustry() + "?";
+
+        Message newMessage = new Message("user", customMessage);
+        Message nextMessage = new Message("user", customPrompt.getMessage());
+        messages.add(newMessage);
+        messages.add(nextMessage);
+
+        return sendPrompt(model, messages, 30, .5);
+    }
+
+    private PromptRecord sendPrompt(String model, List<Message> messages, int max_tokens, double temperature) 
+        throws IOException, InterruptedException {
+        Prompt newPrompt = new Prompt(model, messages, max_tokens, temperature);
         System.out.println(newPrompt.toString());
 
         HttpRequest request = HttpRequest.newBuilder()

@@ -10,11 +10,11 @@ public class PromptDTO {
   private String model;
   private List<String> prompts;
   private List<String> responses;
-  private Integer total_tokens;
+  private int total_tokens;
 
   public PromptDTO() {}
 
-  public PromptDTO(String prompt_id, LocalDate created, String model, List<String> prompts, List<String> responses, Integer total_tokens) {
+  public PromptDTO(String prompt_id, LocalDate created, String model, List<String> prompts, List<String> responses, int total_tokens) {
     this.prompt_id = prompt_id;
     this.created = created;
     this.model = model;
@@ -63,11 +63,11 @@ public class PromptDTO {
     this.responses = responses;
   }
 
-  public Integer getTotal_tokens() {
+  public int getTotal_tokens() {
     return total_tokens;
   }
 
-  public void setTotal_tokens(Integer total_tokens) {
+  public void setTotal_tokens(int total_tokens) {
     this.total_tokens = total_tokens;
   }
 

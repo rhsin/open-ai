@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.openai.prompt.prompt.models.CustomPrompt;
 import com.openai.prompt.prompt.models.PromptDTO;
 import com.openai.prompt.prompt.models.PromptRecord;
 
@@ -41,7 +42,13 @@ public class PromptController {
     }
 
     @PostMapping("/prompt")
-    public ResponseEntity<PromptRecord> sendPrompt(@RequestBody String message) throws IOException, InterruptedException {
-        return new ResponseEntity<>(promptService.sendPrompt(message), HttpStatus.OK);
+    public ResponseEntity<PromptRecord> sendDefaultPrompt(@RequestBody String message) throws IOException, InterruptedException {
+        return new ResponseEntity<>(promptService.sendDefaultPrompt(message), HttpStatus.OK);
+    }
+
+    @PostMapping("/prompt/custom")
+    public ResponseEntity<PromptRecord> sendCustomPrompt(@RequestBody CustomPrompt customPrompt) 
+        throws IOException, InterruptedException {
+        return new ResponseEntity<>(promptService.sendCustomPrompt(customPrompt), HttpStatus.OK);
     }
 }
