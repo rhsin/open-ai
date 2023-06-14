@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.openai.prompt.exception.ApiError;
 import com.openai.prompt.prompt.models.PromptDTO;
 import com.openai.prompt.prompt.models.PromptRecord;
 
@@ -84,6 +85,17 @@ public class PromptControllerIT {
         assertThat(response.getBody().containsKey("total_requests")).isTrue();
         assertThat(response.getBody().containsKey("total_usage")).isTrue();
         assertThat(response.getBody().containsKey("total_cost")).isTrue();
+    }
+
+    @Test
+    public void getPromptRecordError() {
+        ParameterizedTypeReference<ApiError> error = new ParameterizedTypeReference<ApiError>() {};
+
+        ResponseEntity<ApiError> response = template.exchange("/prompt/records/99999", HttpMethod.GET, null, error);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody().getStatus()).isEqualTo(404);
+        assertThat(response.getBody().getMessage()).contains("Prompt record not found: 99999");
     }
 }
 

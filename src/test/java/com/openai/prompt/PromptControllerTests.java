@@ -73,4 +73,13 @@ class PromptControllerTests {
 			.andExpect(jsonPath("$.total_usage", notNullValue()))
 			.andExpect(jsonPath("$.total_cost", notNullValue()));
 	}
+
+	@Test
+	public void getPromptRecordError() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/99999")
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$.status", is(404)))
+			.andExpect(jsonPath("$.message", containsString("Prompt record not found: 99999")));
+	}
 }
