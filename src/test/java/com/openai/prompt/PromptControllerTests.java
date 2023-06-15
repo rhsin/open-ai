@@ -27,7 +27,7 @@ class PromptControllerTests {
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
-			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
+			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0613")))
 			.andExpect(jsonPath("$.[0].prompts", hasSize(greaterThanOrEqualTo(1))))
 			.andExpect(jsonPath("$.[1].responses", hasSize(greaterThanOrEqualTo(1))))
 			.andExpect(jsonPath("$.[1].total_tokens", greaterThanOrEqualTo(10)));
@@ -39,8 +39,8 @@ class PromptControllerTests {
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
-			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
-			.andExpect(jsonPath("$.[1].model", is("gpt-3.5-turbo-0301")));
+			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0613")))
+			.andExpect(jsonPath("$.[1].model", is("gpt-3.5-turbo-0613")));
 	}
 
 	@Test
@@ -48,7 +48,7 @@ class PromptControllerTests {
 		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/2")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.model", is("gpt-3.5-turbo-0301")))
+			.andExpect(jsonPath("$.model", is("gpt-3.5-turbo-0613")))
 			.andExpect(jsonPath("$.max_tokens", is(5)));
 	}
 
@@ -58,7 +58,7 @@ class PromptControllerTests {
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
-			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
+			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0613")))
 			.andExpect(jsonPath("$.[0].prompts", hasSize(greaterThanOrEqualTo(1))))
 			.andExpect(jsonPath("$.[0].responses", hasSize(greaterThanOrEqualTo(1))))
 			.andExpect(jsonPath("$.[0].total_tokens", greaterThanOrEqualTo(10)));
