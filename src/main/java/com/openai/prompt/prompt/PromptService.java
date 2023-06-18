@@ -138,9 +138,10 @@ public class PromptService {
     }
 
     public PromptRecord sendCustomPrompt(CustomPrompt customPrompt) throws IOException, InterruptedException {
+        System.out.println(customPrompt);
         List<Message> messages = new ArrayList<>();
-        String customMessage = "Can you provide some guidance on implementing" + customPrompt.getCategory() +
-            "standards in " + customPrompt.getIndustry() + "?";
+        String customMessage = "Can you provide some guidance on implementing " + customPrompt.getCategory() +
+            " standards in " + customPrompt.getIndustry() + "?";
 
         Message newMessage = new Message("user", customMessage);
         Message nextMessage = new Message("user", customPrompt.getMessage());
