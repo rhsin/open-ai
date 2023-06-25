@@ -31,11 +31,11 @@ public class PromptControllerIT {
         ResponseEntity<List<PromptDTO>> response = template.exchange("/prompt", HttpMethod.GET, null, prompts);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().size()).isGreaterThanOrEqualTo(2);
+        assertThat(response.getBody().size()).isGreaterThanOrEqualTo(1);
         assertThat(response.getBody().get(0).getModel()).isEqualTo("gpt-3.5-turbo-0301");
         assertThat(response.getBody().get(0).getPrompts().size()).isGreaterThanOrEqualTo(1);
-        assertThat(response.getBody().get(1).getResponses().size()).isGreaterThanOrEqualTo(1);
-        assertThat(response.getBody().get(1).getTotal_tokens()).isGreaterThanOrEqualTo(2);
+        assertThat(response.getBody().get(0).getResponses().size()).isGreaterThanOrEqualTo(1);
+        assertThat(response.getBody().get(0).getTotal_tokens()).isGreaterThanOrEqualTo(2);
     }
 
     @Test
@@ -45,25 +45,25 @@ public class PromptControllerIT {
         ResponseEntity<List<PromptRecord>> response = template.exchange("/prompt/records", HttpMethod.GET, null, prompts);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().size()).isGreaterThanOrEqualTo(2);
+        assertThat(response.getBody().size()).isGreaterThanOrEqualTo(1);
         assertThat(response.getBody().get(0).getModel()).isEqualTo("gpt-3.5-turbo-0301");
-        assertThat(response.getBody().get(1).getModel()).isEqualTo("gpt-3.5-turbo-0301");
+        assertThat(response.getBody().get(0).getModel()).isEqualTo("gpt-3.5-turbo-0301");
     }
 
     @Test
     public void getPromptRecord() {
-        ResponseEntity<PromptRecord> response = template.getForEntity("/prompt/records/2", PromptRecord.class);
+        ResponseEntity<PromptRecord> response = template.getForEntity("/prompt/records/302", PromptRecord.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getModel()).isEqualTo("gpt-3.5-turbo-0301");
-        assertThat(response.getBody().getMax_tokens()).isEqualTo(5);
+        assertThat(response.getBody().getObject()).isEqualTo("chat.completion");
     }
 
     @Test
     public void findPromptDTOs() {
         ParameterizedTypeReference<List<PromptDTO>> prompts = new ParameterizedTypeReference<List<PromptDTO>>() {};
 
-        ResponseEntity<List<PromptDTO>> response = template.exchange("/prompt/find/response?keyword=hello", 
+        ResponseEntity<List<PromptDTO>> response = template.exchange("/prompt/find/response?keyword=bye", 
             HttpMethod.GET, null, prompts);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

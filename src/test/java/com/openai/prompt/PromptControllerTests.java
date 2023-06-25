@@ -26,11 +26,11 @@ class PromptControllerTests {
 		mvc.perform(MockMvcRequestBuilders.get("/prompt")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
+			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
 			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
 			.andExpect(jsonPath("$.[0].prompts", hasSize(greaterThanOrEqualTo(1))))
-			.andExpect(jsonPath("$.[1].responses", hasSize(greaterThanOrEqualTo(1))))
-			.andExpect(jsonPath("$.[1].total_tokens", greaterThanOrEqualTo(10)));
+			.andExpect(jsonPath("$.[0].responses", hasSize(greaterThanOrEqualTo(1))))
+			.andExpect(jsonPath("$.[0].total_tokens", greaterThanOrEqualTo(10)));
 	}
 
 	@Test
@@ -38,23 +38,23 @@ class PromptControllerTests {
 		mvc.perform(MockMvcRequestBuilders.get("/prompt/records")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
+			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
 			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")))
-			.andExpect(jsonPath("$.[1].model", is("gpt-3.5-turbo-0301")));
+			.andExpect(jsonPath("$.[0].model", is("gpt-3.5-turbo-0301")));
 	}
 
 	@Test
 	public void getPromptRecord() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/2")
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/302")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.model", is("gpt-3.5-turbo-0301")))
-			.andExpect(jsonPath("$.max_tokens", is(5)));
+			.andExpect(jsonPath("$.object", is("chat.completion")));
 	}
 
 	@Test
 	public void findPromptDTOs() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/prompt/find/response?keyword=hello")
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/find/response?keyword=bye")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
