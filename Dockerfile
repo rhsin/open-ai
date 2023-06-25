@@ -1,14 +1,19 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM maven:3.8.4-openjdk-17 AS build
 
-VOLUME /tmp
+WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY pom.xml .
+
+RUN mvn dependency:go-offline -B
+
+COPY src ./src
+
+RUN mvn package -DskipTests
+
+FROM openjdk:17-jdk-slim
+
+COPY --from=build /app/target/*.jar /app.jar
 
 EXPOSE 8080
 
-ENV SPRING_DATASOURCE_URL=${DB_URL}
-ENV SPRING_DATASOURCE_USERNAME=${DB_USER}
-ENV SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-ENV OPENAI_KEY=${OPENAI_API_KEY}
-
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Dspring.datasource.url=$POSTGRES_URL -Dspring.datasource.username=$POSTGRES_USER -Dspring.datasource.password=$POSTGRES_PASSWORD -jar /app.jar"]

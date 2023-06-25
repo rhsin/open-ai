@@ -1,26 +1,20 @@
-version: '2'
+version: '3.8'
 
 services:
+
   app:
-    image: 'docker-spring-boot-postgres:latest'
     build:
       context: .
-    container_name: app
-    depends_on:
-      - db
+      dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/prompt
-      - SPRING_DATASOURCE_USERNAME=${DB_USER}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-          
+      - POSTGRES_URL=jdbc:postgresql://db:5432/prompt
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+
   db:
-    image: 'postgres:13.1-alpine'
-    container_name: db
-    ports:
-      - 5432:5432
+    image: postgres:13
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
