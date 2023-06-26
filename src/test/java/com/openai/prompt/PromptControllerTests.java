@@ -45,7 +45,7 @@ class PromptControllerTests {
 
 	@Test
 	public void getPromptRecord() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/302")
+		mvc.perform(MockMvcRequestBuilders.get("/prompt/records/1")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.model", is("gpt-3.5-turbo-0301")))

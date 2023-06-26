@@ -52,7 +52,7 @@ public class PromptControllerIT {
 
     @Test
     public void getPromptRecord() {
-        ResponseEntity<PromptRecord> response = template.getForEntity("/prompt/records/302", PromptRecord.class);
+        ResponseEntity<PromptRecord> response = template.getForEntity("/prompt/records/1", PromptRecord.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getModel()).isEqualTo("gpt-3.5-turbo-0301");
