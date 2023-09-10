@@ -98,6 +98,10 @@ public class PromptService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Prompt record not found: " + id));
     }
 
+    public PromptRecord createPromptRecord(PromptRecord promptRecord) {
+        return repository.save(promptRecord);
+    }
+
     public List<PromptDTO> findPromptDTOs(String field, String keyword) {
         List<PromptRecord> prompts = repository.findAll();
         List<PromptDTO> promptDTOs = promptMapper.mapPromptDTOs(prompts);
