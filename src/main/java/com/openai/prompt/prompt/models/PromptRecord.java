@@ -36,6 +36,11 @@ public class PromptRecord {
 
     public PromptRecord() {}
 
+    public PromptRecord(int max_tokens, String model) {
+        this.max_tokens = max_tokens;
+        this.model = model;
+    }
+
     public PromptRecord(int max_tokens, double temperature, String prompt_id, String object, LocalDate created, String model, List<Message> messages, List<Choice> choices, Usage usage) {
         this.max_tokens = max_tokens;
         this.temperature = temperature;

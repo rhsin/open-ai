@@ -47,6 +47,11 @@ public class PromptController {
         return new ResponseEntity<>(promptService.getPromptRecord(id), HttpStatus.OK);
     }
 
+    @PostMapping("/prompt/records")
+    public ResponseEntity<PromptRecord> createPromptRecord(@RequestBody PromptRecord promptRecord) {
+        return new ResponseEntity<>(promptService.createPromptRecord(promptRecord), HttpStatus.CREATED);
+    }
+
     @GetMapping("/prompt/find/{field}")
     public ResponseEntity<List<PromptDTO>> findPromptDTOs(@PathVariable String field, @RequestParam String keyword) {
         return new ResponseEntity<>(promptService.findPromptDTOs(field, keyword), HttpStatus.OK);
