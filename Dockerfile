@@ -16,4 +16,4 @@ COPY --from=build /app/target/*.jar /app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["sh", "-c", "java -Dspring.datasource.url=${DB_URL} -Dspring.datasource.username=${DB_USER} -Dspring.datasource.password=${DB_PASSWORD} -jar /app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Dspring.datasource.url=${H2_URL} -Dspring.datasource.username=${H2_USER} -Dspring.datasource.password=${H2_PASSWORD} -jar /app.jar"]
